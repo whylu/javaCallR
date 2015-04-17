@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- %date 顯示日期時分秒 %level LOG等級,INFO DEBUG 等 %thread 是從哪一個線程觸發 %logger{30} 
+        從哪一支程式來有加package , {}中的數字表示長度太長會以package的第1個英文字代替 %file 哪1個java檔案 %line 行數 
+        %msg LOG的訊息 -->
+
+    <!-- 寫到FILE -->
+    <appender name="FILEOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+          <level>DEBUG</level>
+          <onMatch>ACCEPT</onMatch>
+          <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 請修改LOG檔案儲存路徑 -->
+            <fileNamePattern>/iii-logs/whylufun/whylufun-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <!-- 1個檔案最大20MB -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 留存60天 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}][%p][%t][Line:%L][%c.%M]%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 寫到CONSOLE -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] [%mdc{userId}] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- comparator reporter -->
+    <appender name="ComaratorReporter" class="ch.qos.logback.core.FileAppender">  
+        <append>false</append>
+        <file>/iii-logs/dmm/integrator/comparator/ComparatorReport.log</file>
+        
+        <encoder>  
+            <charset>UTF-8</charset>
+            <!--%date日期 %level日志级别 [%thread]当前线程 %logger{50}输出日志的类，50代表包名加类名的总长度限制 [%file:%line]日志所在文件及行数 %msg%n消息及换行 -->  
+            <pattern>%-5level %msg%n  
+            </pattern>  
+        </encoder>  
+    </appender>  
+
+    <root level="INFO">
+        <!--將LOG寫到FILE -->
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILEOUT" />
+    </root>
+    
+    <logger name="org.whylu" level="DEBUG"></logger>
+    
+    <!-- additivity=false ensures analytics data only goes to the analytics log 
+    <logger name="ST_Eatme_SimilarityComarator.reporter" level="INFO" additivity="false">
+        <appender-ref ref="ComaratorReporter"/>
+    </logger>
+    -->
+    
+</configuration>

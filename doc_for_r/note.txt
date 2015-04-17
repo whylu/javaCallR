@@ -1,0 +1,17 @@
+
+# ref
+http://www.studytrails.com/RJava-Eclipse-Plugin/Execute-R-From-Java.jsp
+
+http://www.studytrails.com/RJava-Eclipse-Plugin/
+
+
+# this project use Rserve to call r from java
+
+install.packages("rJava")
+install.packages("Rserve",dest="C:/Program Files/R")
+
+
+# start Rserve
+library(Rserve)
+Rserve()
+
